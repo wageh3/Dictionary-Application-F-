@@ -7,7 +7,17 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Include="UI\Menu.fs" />
+    <Compile Include="Services\CRUD.fs" />
+    <Compile Include="Models\Word.fs" />
     <Compile Include="Program.fs" />
+    <Compile Include="Services\ErrorHandler.fs" />
+    <Compile Include="Services\FileIO.fs" />
+    <Compile Include="Services\Search.fs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Tests\" />
   </ItemGroup>
 
 </Project>
