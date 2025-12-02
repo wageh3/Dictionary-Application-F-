@@ -6,17 +6,25 @@
     <RootNamespace>Dictionary_Application</RootNamespace>
   </PropertyGroup>
 
-  <ItemGroup>
-    <Compile Include="UI\Menu.fs" />
-    <Compile Include="Services\CRUD.fs" />
-    <Compile Include="Models\Word.fs" />
-    <Compile Include="Program.fs" />
-    <Compile Include="Services\ErrorHandler.fs" />
-    <Compile Include="Services\FileIO.fs" />
-    <Compile Include="Services\Search.fs" />
-  </ItemGroup>
+	<ItemGroup>
+		<!-- Models must always come first -->
+		<Compile Include="Models\Word.fs" />
 
-  <ItemGroup>
+		<!-- Services come next -->
+		<Compile Include="Services\CRUD.fs" />
+		<Compile Include="Services\Search.fs" />
+		<Compile Include="Services\FileIO.fs" />
+		<Compile Include="Services\ErrorHandler.fs" />
+
+		<!-- UI comes after Services -->
+		<Compile Include="UI\Menu.fs" />
+
+		<!-- Program last -->
+		<Compile Include="Program.fs" />
+	</ItemGroup>
+
+
+	<ItemGroup>
     <Folder Include="Tests\" />
   </ItemGroup>
 
