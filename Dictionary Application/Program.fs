@@ -1,35 +1,34 @@
 ﻿open Dictionary_Application.Models
-open Dictionary_Application.Services
 
 [<EntryPoint>]
 let main _ =
-    printfn "Testing CRUD functions...\n"
+    printfn "Dictionary Application \n"
+    printfn "All operations auto-save to dict.json and dict.xml\n"
 
+    let mutable dict = Map.empty<string, Word>
+
+    printfn "--- Adding Words ---"
+    dict <- CRUD.addWord "Apple" "A kind of fruit" dict
+    dict <- CRUD.addWord "Banana" "A yellow fruit" dict
+    dict <- CRUD.addWord "Orange" "A citrus fruit" dict
+    dict <- CRUD.addWord "Wivi" "A green fruit" dict 
+    dict <- CRUD.addWord "strubarry" "A pink fruit" dict
+    dict <- CRUD.addWord "Watermelon" "A big fruit" dict
+    dict <- CRUD.addWord "lemon" "A yellow green fruit" dict
+    printfn "\n--- Current Dictionary ---"
+    dict |> Map.iter (fun _ word -> printfn "%s: %s" word.Term word.Definition)
+
+    printfn "\n--- Testing Operations ---"
     
-    let dict0 = Map.empty<string, Word>
-
+    dict <- CRUD.updateWord "apple" "A sweet red or green fruit" dict
+    dict <- CRUD.updateWord "lemon" "A beautifull" dict
     
-    let dict1 =
-        CRUD.addWord "Apple" "A kind of fruit" dict0
-
-    printfn "After Add Word: %A\n" dict1
-
+    dict <- CRUD.deleteWord "Banana" dict
+    dict <- CRUD.deleteWord "lemon" dict
+    printfn "\n--- Final Result ---"
+    printfn "Total words: %d" (Map.count dict)
     
-    match CRUD.getWord "Apple" dict1 with
-    | Some w -> printfn "Found: %s = %s\n" w.Term w.Definition
-    | None -> printfn "Not found!\n"
+    dict |> Map.iter (fun _ word -> printfn "✨ %s: %s" word.Term word.Definition)
 
-   
-    let dict2 =
-        CRUD.updateWord "Apple" "A sweet red or green fruit" dict1
-
-    printfn "After Update: %A\n" dict2
-
-  
-    let dict3 =
-        CRUD.deleteWord "Apple" dict2
-
-    printfn "After Delete: %A\n" dict3
-
+    printfn ("\nCheck dict.json and dict.xml files!")
     0
-    

@@ -1,35 +1,50 @@
-﻿namespace Dictionary_Application.Services
+﻿module CRUD
 
 open Dictionary_Application.Models
+open System
 
-module CRUD =
+let addWord (term: string) (definition: string) (dict: Map<string, Word>) =
+    let key = term.ToLower()
+    let newWord = Word(term, definition)
+    let newDict = dict |> Map.add key newWord
 
-    /// Add a new word.
-    let addWord (term: string) (definition: string) (dict: Map<string, Word>) =
-        let key = term.ToLower()
-        let newWord = { Term = term; Definition = definition }
-        dict |> Map.add key newWord
+    printfn "Added: '%s' - %s" term definition
+    printfn "   Total words now: %d" (Map.count newDict)
 
+    FileIO.saveToJson "dict.json" newDict |> ignore
+    FileIO.saveToXml "dict.xml" newDict |> ignore
+    
+    newDict
 
-    /// Update
-    let updateWord (term: string) (newDefinition: string) (dict: Map<string, Word>) =
-        let key = term.ToLower()
+let updateWord (term: string) (newDefinition: string) (dict: Map<string, Word>) =
+    let key = term.ToLower()
+    match dict.TryFind key with
+    | Some existing ->
+        let updatedWord = Word(term, newDefinition)
+        let newDict = dict |> Map.add key updatedWord
+        
+        printfn "Updated: '%s' - %s" term newDefinition
+        
+        FileIO.saveToJson "dict.json" newDict |> ignore
+        FileIO.saveToXml "dict.xml" newDict |> ignore
+        
+        newDict
+    | None -> 
+        printfn "Word '%s' not found for update" term
+        dict
 
-        match dict.TryFind key with
-        | Some existing ->
-            let updated = { existing with Definition = newDefinition }
-            dict |> Map.add key updated
-        | None ->
-            dict   
+let deleteWord (term: string) (dict: Map<string, Word>) =
+    let key = term.ToLower()
+    let newDict = dict |> Map.remove key
+    
+    printfn "Deleted: '%s'" term
+    printfn "   Total words now: %d" (Map.count newDict)
+    
+    FileIO.saveToJson "dict.json" newDict |> ignore
+    FileIO.saveToXml "dict.xml" newDict |> ignore
+    
+    newDict
 
-
-    /// Delete 
-    let deleteWord (term: string) (dict: Map<string, Word>) =
-        let key = term.ToLower()
-        dict |> Map.remove key
-
-
-    /// Get a word
-    let getWord (term: string) (dict: Map<string, Word>) =
-        let key = term.ToLower()
-        dict |> Map.tryFind key
+let getWord (term: string) (dict: Map<string, Word>) =
+    let key = term.ToLower()
+    dict |> Map.tryFind key
