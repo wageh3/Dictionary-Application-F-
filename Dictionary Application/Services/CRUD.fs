@@ -2,20 +2,25 @@
 
 open Dictionary_Application.Models
 open System
+open System.IO
 
-let basePath = 
-    @"C:\Users\DELL\source\repos\wageh3\Dictionary-Application-F-\Dictionary Application\Data"
+
+
+
+let getDataFilePath (fileName: string) =
+    let currentDir = AppDomain.CurrentDomain.BaseDirectory
+    // هنا استخدمنا Path.Combine عشان نضمن ان المسار يتركب صح سواء ويندوز او غيره
+    Path.Combine(currentDir, "Data", fileName)
+    
 
 let addWord (term: string) (definition: string) (dict: Map<string, Word>) =
     let key = term.ToLower()
     let newWord = Word(term, definition)
     let newDict = dict |> Map.add key newWord
 
-    printfn "Added: '%s' - %s" term definition
-    printfn "   Total words now: %d" (Map.count newDict)
 
-    FileIO.saveToJson (basePath + @"\dict.json") newDict |> ignore
-    FileIO.saveToXml (basePath + @"\dict.xml") newDict |> ignore
+    FileIO.saveToJson (getDataFilePath "dict.json") newDict |> ignore
+    FileIO.saveToXml (getDataFilePath "dict.xml") newDict |> ignore
     
     newDict
 
@@ -28,8 +33,8 @@ let updateWord (term: string) (newDefinition: string) (dict: Map<string, Word>) 
         
         printfn "Updated: '%s' - %s" term newDefinition
         
-        FileIO.saveToJson (basePath + @"\dict.json") newDict |> ignore
-        FileIO.saveToXml (basePath + @"\dict.xml") newDict |> ignore
+        FileIO.saveToJson (getDataFilePath "dict.json") newDict |> ignore
+        FileIO.saveToXml (getDataFilePath "dict.xml") newDict |> ignore
         
         newDict
     | None -> 
@@ -43,11 +48,12 @@ let deleteWord (term: string) (dict: Map<string, Word>) =
     printfn "Deleted: '%s'" term
     printfn "   Total words now: %d" (Map.count newDict)
     
-    FileIO.saveToJson (basePath + @"\dict.json") newDict |> ignore
-    FileIO.saveToXml (basePath + @"\dict.xml") newDict |> ignore
+    FileIO.saveToJson (getDataFilePath "dict.json") newDict |> ignore
+    FileIO.saveToXml (getDataFilePath "dict.xml") newDict |> ignore
     
     newDict
 
-let getWord (term: string) (dict: Map<string, Word>) =
-    let key = term.ToLower()
-    dict |> Map.tryFind key
+    /// Get a word
+    let getWord (term: string) (dict: Map<string, Word>) =
+        let key = term.ToLower()
+        dict |> Map.tryFind key
