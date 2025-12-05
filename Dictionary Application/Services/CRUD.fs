@@ -1,4 +1,4 @@
-﻿namespace Dictionary_Application.Services
+﻿module CRUD
 
 open Dictionary_Application.Models
 open System
