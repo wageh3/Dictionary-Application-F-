@@ -3,6 +3,9 @@
 open Dictionary_Application.Models
 open System
 
+let basePath = 
+    @"C:\Users\DELL\source\repos\wageh3\Dictionary-Application-F-\Dictionary Application\Data"
+
 let addWord (term: string) (definition: string) (dict: Map<string, Word>) =
     let key = term.ToLower()
     let newWord = Word(term, definition)
@@ -11,8 +14,8 @@ let addWord (term: string) (definition: string) (dict: Map<string, Word>) =
     printfn "Added: '%s' - %s" term definition
     printfn "   Total words now: %d" (Map.count newDict)
 
-    FileIO.saveToJson "dict.json" newDict |> ignore
-    FileIO.saveToXml "dict.xml" newDict |> ignore
+    FileIO.saveToJson (basePath + @"\dict.json") newDict |> ignore
+    FileIO.saveToXml (basePath + @"\dict.xml") newDict |> ignore
     
     newDict
 
@@ -25,8 +28,8 @@ let updateWord (term: string) (newDefinition: string) (dict: Map<string, Word>) 
         
         printfn "Updated: '%s' - %s" term newDefinition
         
-        FileIO.saveToJson "dict.json" newDict |> ignore
-        FileIO.saveToXml "dict.xml" newDict |> ignore
+        FileIO.saveToJson (basePath + @"\dict.json") newDict |> ignore
+        FileIO.saveToXml (basePath + @"\dict.xml") newDict |> ignore
         
         newDict
     | None -> 
@@ -40,8 +43,8 @@ let deleteWord (term: string) (dict: Map<string, Word>) =
     printfn "Deleted: '%s'" term
     printfn "   Total words now: %d" (Map.count newDict)
     
-    FileIO.saveToJson "dict.json" newDict |> ignore
-    FileIO.saveToXml "dict.xml" newDict |> ignore
+    FileIO.saveToJson (basePath + @"\dict.json") newDict |> ignore
+    FileIO.saveToXml (basePath + @"\dict.xml") newDict |> ignore
     
     newDict
 

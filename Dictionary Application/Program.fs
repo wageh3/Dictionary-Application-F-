@@ -15,6 +15,8 @@ let main _ =
     dict <- CRUD.addWord "strubarry" "A pink fruit" dict
     dict <- CRUD.addWord "Watermelon" "A big fruit" dict
     dict <- CRUD.addWord "lemon" "A yellow green fruit" dict
+    dict <- CRUD.addWord "pinaple" "a good fruit" dict
+    dict <- CRUD.addWord "pen" "a blue " dict
     printfn "\n--- Current Dictionary ---"
     dict |> Map.iter (fun _ word -> printfn "%s: %s" word.Term word.Definition)
 
