@@ -57,8 +57,7 @@ let deleteWord (term: string) (dict: Map<string, Word>) =
     FileIO.saveToXml (getDataFilePath "dict.xml") newDict |> ignore
     
     newDict
-
-    /// Get a word
-    let getWord (term: string) (dict: Map<string, Word>) =
-        let key = term.ToLower()
-        dict |> Map.tryFind key
+/// Get a word
+let getWord (term: string) (dict: Map<string, Word>) =
+    let key = term.ToLower()
+    dict |> Map.tryFind key
