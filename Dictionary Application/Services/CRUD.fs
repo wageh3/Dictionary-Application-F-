@@ -9,7 +9,13 @@ open System.IO
 
 let getDataFilePath (fileName: string) =
     let currentDir = AppDomain.CurrentDomain.BaseDirectory
-    Path.Combine(currentDir, "Data", fileName)
+    let dataFolder = Path.Combine(currentDir, "Data")
+    
+    // السطرين دول زيادة للأمان: لو الفولدر مش موجود اعمله
+    if not (Directory.Exists(dataFolder)) then
+        Directory.CreateDirectory(dataFolder) |> ignore
+        
+    Path.Combine(dataFolder, fileName)
     
 
 let addWord (term: string) (definition: string) (dict: Map<string, Word>) =
