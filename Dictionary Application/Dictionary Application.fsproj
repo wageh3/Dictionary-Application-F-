@@ -1,31 +1,26 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <OutputType>Exe</OutputType>
-    <TargetFramework>net8.0</TargetFramework>
-    <RootNamespace>Dictionary_Application</RootNamespace>
-  </PropertyGroup>
+	<PropertyGroup>
+		<OutputType>Exe</OutputType>
+		<TargetFramework>net8.0</TargetFramework>
+		<RootNamespace>Dictionary_Application</RootNamespace>
+	</PropertyGroup>
 
 	<ItemGroup>
-		<!-- Models must always come first -->
+		<!-- Models first -->
 		<Compile Include="Models\Word.fs" />
 
-		<!-- Services come next -->
+		<!-- Services - FileIO MUST come before CRUD -->
+		<Compile Include="Services\FileIO.fs" />
 		<Compile Include="Services\CRUD.fs" />
 		<Compile Include="Services\Search.fs" />
-		<Compile Include="Services\FileIO.fs" />
 		<Compile Include="Services\ErrorHandler.fs" />
 
-		<!-- UI comes after Services -->
+		<!-- UI -->
 		<Compile Include="UI\Menu.fs" />
 
 		<!-- Program last -->
 		<Compile Include="Program.fs" />
 	</ItemGroup>
-
-
-	<ItemGroup>
-    <Folder Include="Tests\" />
-  </ItemGroup>
 
 </Project>
