@@ -9,7 +9,6 @@ open System.IO
 
 let getDataFilePath (fileName: string) =
     let currentDir = AppDomain.CurrentDomain.BaseDirectory
-    // هنا استخدمنا Path.Combine عشان نضمن ان المسار يتركب صح سواء ويندوز او غيره
     Path.Combine(currentDir, "Data", fileName)
     
 
@@ -52,8 +51,7 @@ let deleteWord (term: string) (dict: Map<string, Word>) =
     FileIO.saveToXml (getDataFilePath "dict.xml") newDict |> ignore
     
     newDict
-
-    /// Get a word
-    let getWord (term: string) (dict: Map<string, Word>) =
-        let key = term.ToLower()
-        dict |> Map.tryFind key
+/// Get a word
+let getWord (term: string) (dict: Map<string, Word>) =
+    let key = term.ToLower()
+    dict |> Map.tryFind key
