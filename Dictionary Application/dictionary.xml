@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ArrayOfWord xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Word>
+    <Term>apple</Term>
+    <Definition>A red or green fruit</Definition>
+  </Word>
+  <Word>
+    <Term>Orange</Term>
+    <Definition>A citrus fruit</Definition>
+  </Word>
+  <Word>
+    <Term>Wivi</Term>
+    <Definition>A green tropical fruit</Definition>
+  </Word>
+</ArrayOfWord>

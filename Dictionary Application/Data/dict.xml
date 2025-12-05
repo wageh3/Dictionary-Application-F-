@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ArrayOfWord xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Word>
+    <Term>apple</Term>
+    <Definition>A sweet red or green fruit</Definition>
+  </Word>
+  <Word>
+    <Term>Orange</Term>
+    <Definition>A citrus fruit</Definition>
+  </Word>
+  <Word>
+    <Term>pen</Term>
+    <Definition>a blue </Definition>
+  </Word>
+  <Word>
+    <Term>pinaple</Term>
+    <Definition>a good fruit</Definition>
+  </Word>
+  <Word>
+    <Term>strubarry</Term>
+    <Definition>A pink fruit</Definition>
+  </Word>
+  <Word>
+    <Term>Watermelon</Term>
+    <Definition>A big fruit</Definition>
+  </Word>
+  <Word>
+    <Term>Wivi</Term>
+    <Definition>A green fruit</Definition>
+  </Word>
+</ArrayOfWord>
