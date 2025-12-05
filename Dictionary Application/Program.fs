@@ -23,13 +23,17 @@ let main _ =
     let dict2 =
         CRUD.updateWord "Apple" "A sweet red or green fruit" dict1
 
-    printfn "After Update: %A\n" dict2
-
-  
-    let dict3 =
-        CRUD.deleteWord "Apple" dict2
-
-    printfn "After Delete: %A\n" dict3
+    printfn "\n--- Testing Operations ---"
+    
+    dict <- CRUD.updateWord "apple" "A sweet red or green fruit" dict
+    dict <- CRUD.updateWord "lemon" "A beautifull" dict
+    dict <- CRUD.updateWord "pen" "A blue colorrr" dict
+    dict <- CRUD.deleteWord "Banana" dict
+    dict <- CRUD.deleteWord "lemon" dict
+    printfn "\n--- Final Result ---"
+    printfn "Total words: %d" (Map.count dict)
+    
+    dict |> Map.iter (fun _ word -> printfn " %s: %s" word.Term word.Definition)
 
     0
     
