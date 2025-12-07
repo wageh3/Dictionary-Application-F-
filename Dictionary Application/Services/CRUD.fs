@@ -79,7 +79,7 @@ open Dictionary_Application.Models
 open System
 open System.IO
 
-/// Get full path for a data file
+
 let getDataFilePath (fileName: string) =
     let currentDir = AppDomain.CurrentDomain.BaseDirectory
     let dataFolder = Path.Combine(currentDir, "Data")
@@ -87,39 +87,42 @@ let getDataFilePath (fileName: string) =
         Directory.CreateDirectory(dataFolder) |> ignore
     Path.Combine(dataFolder, fileName)
 
-/// Add a word 
+
+let private sortDict (dict: Map<string, Word>) =
+    dict |> Map.toSeq |> Seq.sortBy fst |> Map.ofSeq
+
+
 let addWord (term: string) (definition: string) (dict: Map<string, Word>) : Map<string, Word> =
     let key = term.ToLower()
     if dict.ContainsKey key then dict
     else
         let newWord = Word(term, definition)
-        let newDict = dict |> Map.add key newWord
-        // Save files
+        let newDict = dict |> Map.add key newWord |> sortDict
+
         FileIO.saveToJson (getDataFilePath "dict.json") newDict |> ignore
         FileIO.saveToXml (getDataFilePath "dict.xml") newDict |> ignore
         newDict
 
-/// Update a word 
 let updateWord (term: string) (newDefinition: string) (dict: Map<string, Word>) : Map<string, Word> =
     let key = term.ToLower()
     match dict.TryFind key with
     | Some _ ->
         let updatedWord = Word(term, newDefinition)
-        let newDict = dict |> Map.add key updatedWord
+        let newDict = dict |> Map.add key updatedWord |> sortDict
         FileIO.saveToJson (getDataFilePath "dict.json") newDict |> ignore
         FileIO.saveToXml (getDataFilePath "dict.xml") newDict |> ignore
         newDict
     | None -> dict
 
-/// Delete a word 
+
 let deleteWord (term: string) (dict: Map<string, Word>) : Map<string, Word> =
     let key = term.ToLower()
-    let newDict = dict |> Map.remove key
+    let newDict = dict |> Map.remove key |> sortDict
     FileIO.saveToJson (getDataFilePath "dict.json") newDict |> ignore
     FileIO.saveToXml (getDataFilePath "dict.xml") newDict |> ignore
     newDict
 
-/// Get a word 
+
 let getWord (term: string) (dict: Map<string, Word>) : Word option =
     let key = term.ToLower()
     dict |> Map.tryFind key
