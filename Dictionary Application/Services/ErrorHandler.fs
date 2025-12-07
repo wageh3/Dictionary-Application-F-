@@ -55,7 +55,7 @@ let safeDeleteWord (term: string) (dict: Map<string, Word>) : Map<string, Word> 
     | Ok t ->
         let key = t.ToLower()
         if dict.ContainsKey key then
-            let newDict = dict |> Map.remove key
+            let newDict = CRUD.deleteWord t dict
             newDict
         else
             printfn "Word '%s' not found for deletion." t
