@@ -1,48 +1,62 @@
-﻿//open System
-//open Dictionary_Application.UI
+﻿////open System
+////open Dictionary_Application.UI
 
+
+////[<EntryPoint>]
+////let main argv =
+ 
+////    let jsonPath = CRUD.getDataFilePath "dict.json"
+    
+////    let initialDict = 
+////        match FileIO.loadFromJson jsonPath with
+////        | Ok loadedDict -> 
+////            printfn "Dictionary loaded successfully (%d words)." (Map.count loadedDict)
+////            loadedDict
+////        | Error msg -> 
+////            printfn "Notice: %s" msg
+////            printfn "Starting with a new empty dictionary."
+////            Map.empty
+
+
+////    Menu.loop initialDict
+    
+////    0 
+
+//open System
+//open Dictionary_Application.Models
+//open CRUD
+//open ErrorHandler
+//open Search
+//open Dictionary_Application.UI
 
 //[<EntryPoint>]
 //let main argv =
- 
 //    let jsonPath = CRUD.getDataFilePath "dict.json"
     
-//    let initialDict = 
+//    let mutable dict : Map<string, Word> =
 //        match FileIO.loadFromJson jsonPath with
-//        | Ok loadedDict -> 
+//        | Ok loadedDict ->
 //            printfn "Dictionary loaded successfully (%d words)." (Map.count loadedDict)
 //            loadedDict
-//        | Error msg -> 
+//        | Error msg ->
 //            printfn "Notice: %s" msg
 //            printfn "Starting with a new empty dictionary."
 //            Map.empty
 
+//    Menu.loop dict
 
-//    Menu.loop initialDict
-    
 //    0 
 
+
 open System
-open Dictionary_Application.Models
-open CRUD
-open ErrorHandler
-open Search
+open System.Windows.Forms
 open Dictionary_Application.UI
 
 [<EntryPoint>]
 let main argv =
-    let jsonPath = CRUD.getDataFilePath "dict.json"
-    
-    let mutable dict : Map<string, Word> =
-        match FileIO.loadFromJson jsonPath with
-        | Ok loadedDict ->
-            printfn "Dictionary loaded successfully (%d words)." (Map.count loadedDict)
-            loadedDict
-        | Error msg ->
-            printfn "Notice: %s" msg
-            printfn "Starting with a new empty dictionary."
-            Map.empty
+    Application.EnableVisualStyles()
+    Application.SetCompatibleTextRenderingDefault(false)
 
-    Menu.loop dict
+    Application.Run(new MainForm())
 
-    0 
+    0

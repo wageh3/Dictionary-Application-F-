@@ -1,26 +1,24 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+﻿
+
+
+<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
-		<OutputType>Exe</OutputType>
-		<TargetFramework>net8.0</TargetFramework>
+		<OutputType>WinExe</OutputType>
+		<TargetFramework>net8.0-windows</TargetFramework>
 		<RootNamespace>Dictionary_Application</RootNamespace>
+		<UseWindowsForms>true</UseWindowsForms>
 	</PropertyGroup>
 
 	<ItemGroup>
-		<!-- Models first -->
 		<Compile Include="Models\Word.fs" />
 
-		<!-- Services - FileIO MUST come before CRUD -->
 		<Compile Include="Services\FileIO.fs" />
 		<Compile Include="Services\CRUD.fs" />
 		<Compile Include="Services\Search.fs" />
 		<Compile Include="Services\ErrorHandler.fs" />
 
-		<!-- UI -->
-		<Compile Include="UI\Menu.fs" />
-
-		<!-- Program last -->
-		<Compile Include="Program.fs" />
+		<Compile Include="UI\MainForm.fs" />
 	</ItemGroup>
 
 </Project>
