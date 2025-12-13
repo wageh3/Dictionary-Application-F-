@@ -7,14 +7,11 @@ open System.Text.Json
 open System.Xml.Serialization
 
 
-let saveToJson (filePath: string) (dict: Map<string, Word>) =
+let saveGeneric<'T> (filePath: string) (data: 'T) (options: JsonSerializerOptions) =
     try
-        
-        let sortedDict = dict |> Map.toSeq |> Seq.sortBy fst |> Map.ofSeq
-        let data = sortedDict |> Map.toList |> List.map snd
-        let json = JsonSerializer.Serialize(data, JsonSerializerOptions(WriteIndented = true))
+        let json = JsonSerializer.Serialize(data, options)
         File.WriteAllText(filePath, json)
-        Ok "JSON saved successfully."
+        Ok "Data saved successfully."
     with
     | ex -> Error $"Failed to save JSON: {ex.Message}"
 

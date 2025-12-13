@@ -11,10 +11,13 @@
 	</PropertyGroup>
 
 	<ItemGroup>
+		<Compile Include="Models\User.fs" />
 		<Compile Include="Models\Word.fs" />
+		
 
 		<Compile Include="Services\FileIO.fs" />
 		<Compile Include="Services\CRUD.fs" />
+		<Compile Include="Services\UserAuth.fs" />
 		<Compile Include="Services\Search.fs" />
 		<Compile Include="Services\ErrorHandler.fs" />
 
