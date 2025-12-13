@@ -6,6 +6,7 @@ open System.Text.Json.Serialization
 open Dictionary_Application.Models
 open CRUD
 open FileIO
+//open FileIO
 
 module UserAuth =
 
@@ -13,10 +14,7 @@ module UserAuth =
 
     // دالة مساعدة لعمل إعدادات الـ JSON
     // دي اللي بتحل مشكلة الـ Enum/Union
-    let private getJsonOptions () =
-        let options = JsonSerializerOptions(WriteIndented = true)
-        options.Converters.Add(JsonStringEnumConverter())
-        options
+    
 
     /// تحميل اليوزرز من JSON
     let loadUsers () =

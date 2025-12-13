@@ -5,7 +5,12 @@ open System
 open System.IO
 open System.Text.Json
 open System.Xml.Serialization
+open System.Text.Json.Serialization
 
+let getJsonOptions () =
+        let options = JsonSerializerOptions(WriteIndented = true)
+        options.Converters.Add(JsonStringEnumConverter())
+        options
 
 let saveGeneric<'T> (filePath: string) (data: 'T) (options: JsonSerializerOptions) =
     try
@@ -32,16 +37,23 @@ let loadFromJson (filePath: string) : Result<Map<string, Word>, string> =
     try
         if File.Exists(filePath) then
             let json = File.ReadAllText(filePath)
-            let words = JsonSerializer.Deserialize<Word array>(json)
-            let dict =
-                match words with
-                | null -> Map.empty
-                | arr -> arr |> Array.map (fun w -> (w.Term.ToLower(), w)) |> Map.ofArray
-            Ok (dict |> Map.toSeq |> Seq.sortBy fst |> Map.ofSeq)
+
+            let dictOpt =
+                JsonSerializer.Deserialize<Map<string, Word>>(json)
+                |> Option.ofObj
+
+            match dictOpt with
+            | Some d ->
+                Ok (d |> Map.toSeq |> Seq.sortBy fst |> Map.ofSeq)
+            | None ->
+                Ok Map.empty
         else
-            Ok Map.empty<string, Word>
+            Ok Map.empty
     with
-    | ex -> Error $"Failed to load JSON: {ex.Message}"
+    | ex ->
+        Error $"Failed to load JSON: {ex.Message}"
+
+
 
 
 let loadFromXml (filePath: string) : Result<Map<string, Word>, string> =

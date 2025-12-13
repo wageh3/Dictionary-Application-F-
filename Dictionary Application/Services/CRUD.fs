@@ -24,8 +24,8 @@ let addWord (term: string) (definition: string) (dict: Map<string, Word>) : Map<
         let newWord = Word(term, definition)
         let newDict = dict |> Map.add key newWord |> sortDict
 
-        FileIO.saveGeneric (getDataFilePath "dict.json") newDict |> ignore
-        FileIO.saveToXml (getDataFilePath "dict.xml") newDict |> ignore
+        //FileIO.saveGeneric (getDataFilePath "dict.json") newDict |> ignore
+        //FileIO.saveToXml (getDataFilePath "dict.xml") newDict |> ignore
         newDict
 
 let updateWord (term: string) (newDefinition: string) (dict: Map<string, Word>) : Map<string, Word> =
