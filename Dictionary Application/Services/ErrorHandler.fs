@@ -1,6 +1,7 @@
 ﻿module ErrorHandler
 
 open System
+open System.Windows.Forms
 open Dictionary_Application.Models
 open CRUD
 open FileIO
@@ -12,7 +13,9 @@ let validateTerm (term: string) : Result<string, string> =
         Error "Term cannot be empty."
     elif t.Contains("  ") then
         Error "Term contains invalid spacing."
-    else Ok t
+    else 
+        Ok t
+
 
 let validateDefinition (definition: string) : Result<string, string> =
     let d = definition.Trim()
@@ -20,70 +23,79 @@ let validateDefinition (definition: string) : Result<string, string> =
         Error "Definition cannot be empty."
     elif d.Length < 2 then
         Error "Definition is too short."
-    else Ok d
+    else 
+        Ok d
 
 
 let safeAddWord (term: string) (definition: string) (dict: Map<string, Word>) : Map<string, Word> =
     match validateTerm term, validateDefinition definition with
-    | Error e, _ -> printfn "Error: %s" e; dict
-    | _, Error e -> printfn "Error: %s" e; dict
+    | Error e, _ -> 
+        MessageBox.Show(e, "Invalid Term") |> ignore
+        dict
+    | _, Error e -> 
+        MessageBox.Show(e, "Invalid Definition") |> ignore
+        dict
     | Ok t, Ok d ->
         let key = t.ToLower()
         if dict.ContainsKey key then
-            printfn "Word '%s' already exists. Use update instead." t
+            MessageBox.Show($"Word '{t}' already exists.", "Add Failed") |> ignore
             dict
         else
-            let newDict = CRUD.addWord t d dict
-            newDict
+            CRUD.addWord t d dict
+
 
 let safeUpdateWord (term: string) (definition: string) (dict: Map<string, Word>) : Map<string, Word> =
     match validateTerm term, validateDefinition definition with
-    | Error e, _ -> printfn "Error: %s" e; dict
-    | _, Error e -> printfn "Error: %s" e; dict
+    | Error e, _ -> 
+        MessageBox.Show(e, "Invalid Term") |> ignore
+        dict
+    | _, Error e -> 
+        MessageBox.Show(e, "Invalid Definition") |> ignore
+        dict
     | Ok t, Ok d ->
         let key = t.ToLower()
         if dict.ContainsKey key then
-            let newDict = CRUD.updateWord t d dict
-            newDict
+            CRUD.updateWord t d dict
         else
-            printfn "Word '%s' not found for update." t
+            MessageBox.Show($"Word '{t}' not found for update.", "Update Failed") |> ignore
             dict
+
 
 let safeDeleteWord (term: string) (dict: Map<string, Word>) : Map<string, Word> =
     match validateTerm term with
-    | Error e -> printfn "Error: %s" e; dict
+    | Error e -> 
+        MessageBox.Show(e, "Invalid Term") |> ignore
+        dict
     | Ok t ->
         let key = t.ToLower()
         if dict.ContainsKey key then
-            let newDict = CRUD.deleteWord t dict
-            newDict
+            CRUD.deleteWord t dict
         else
-            printfn "Word '%s' not found for deletion." t
+            MessageBox.Show($"Word '{t}' not found for deletion.", "Delete Failed") |> ignore
             dict
 
 
 let safeSearchTerm (term: string) : string option =
     let t = term.Trim()
-    if String.IsNullOrWhiteSpace(t) then
-        None
-    else Some(t.ToLower())
+    if String.IsNullOrWhiteSpace(t) then None else Some(t.ToLower())
 
 
-let handleInvalidChoice () : unit =
-    printfn "Invalid choice, please try again."
+let handleInvalidChoice () =
+    MessageBox.Show("Invalid choice, please try again.") |> ignore
 
 
 let rec promptValidTerm () : string =
-    printf "Enter term: "
     let input = Console.ReadLine()
     match validateTerm input with
     | Ok t -> t
-    | Error e -> printfn "Error: %s" e; promptValidTerm ()
+    | Error e -> 
+        MessageBox.Show(e) |> ignore
+        promptValidTerm ()
 
 let rec promptValidDefinition () : string =
-    printf "Enter definition: "
     let input = Console.ReadLine()
     match validateDefinition input with
     | Ok d -> d
-    | Error e -> printfn "Error: %s" e; promptValidDefinition ()
-
+    | Error e -> 
+        MessageBox.Show(e) |> ignore
+        promptValidDefinition ()
