@@ -130,7 +130,9 @@ type MainForm(currentUser: User) as this =
     let mutable dict : Map<string, Word> =
         match FileIO.loadFromJson (CRUD.getDataFilePath "dict.json") with
         | Ok d -> d
+                  
         | Error _ -> Map.empty
+                       
 
     // REFRESH LIST UI
     let refreshList() =
@@ -154,7 +156,7 @@ type MainForm(currentUser: User) as this =
                 lstWords.Items.Add(sprintf "%-20s %-50s" w.Term w.Definition) |> ignore
 
     let saveDict() =
-        FileIO.saveGeneric (CRUD.getDataFilePath "dict.json") dict |> ignore
+        FileIO.saveGeneric (CRUD.getDataFilePath "dict.json") dict (getJsonOptions()) |> ignore
         FileIO.saveToXml (CRUD.getDataFilePath "dict.xml") dict |> ignore
 
     // ADD TO FORM
@@ -229,6 +231,9 @@ type MainForm(currentUser: User) as this =
             this.Close() // هيقفل الفورم دي ويرجع للـ Login
         )
 
+    override this.OnLoad(e: EventArgs) =
+        base.OnLoad(e)
+        refreshList()
 // ==========================================
 // 3. LOGIN FORM
 // ==========================================
@@ -254,6 +259,7 @@ type LoginForm() as this =
 
     override this.OnLoad(e) =
         base.OnLoad(e)
+        
 
         // Login Logic
         btnLogin.Click.Add(fun _ ->
