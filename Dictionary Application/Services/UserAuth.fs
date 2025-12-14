@@ -1,0 +1,46 @@
+﻿namespace Dictionary_Application.Services
+
+open System.IO
+open System.Text.Json
+open System.Text.Json.Serialization 
+open Dictionary_Application.Models
+open CRUD
+open FileIO
+
+module UserAuth =
+
+    let private usersFile = CRUD.getDataFilePath "users.json"
+
+    let loadUsers () =
+        if File.Exists(usersFile) then
+            try
+                let json = File.ReadAllText(usersFile) 
+                JsonSerializer.Deserialize<User list>(json, getJsonOptions())
+            with
+            | _ -> 
+                []
+        else
+            []
+
+   
+    let saveUsers (users: User list) =
+        FileIO.saveGeneric usersFile users (getJsonOptions()) |> ignore
+
+    
+    let register username password role =
+        let users = loadUsers()
+
+        if users |> List.exists (fun u -> u.Username = username) then
+            Error "Username already exists"
+        else
+            let newUser = { Username = username; Password = password; Role = role }
+            let updated = newUser :: users
+            saveUsers updated
+            Ok newUser
+
+   
+    let login username password =
+        let users = loadUsers()
+        match users |> List.tryFind (fun u -> u.Username = username && u.Password = password) with
+        | Some user -> Ok user
+        | None -> Error "Invalid username or password"

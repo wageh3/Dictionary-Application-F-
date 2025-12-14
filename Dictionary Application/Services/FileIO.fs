@@ -5,16 +5,18 @@ open System
 open System.IO
 open System.Text.Json
 open System.Xml.Serialization
+open System.Text.Json.Serialization
 
+let getJsonOptions () =
+        let options = JsonSerializerOptions(WriteIndented = true)
+        options.Converters.Add(JsonStringEnumConverter())
+        options
 
-let saveToJson (filePath: string) (dict: Map<string, Word>) =
+let saveGeneric<'T> (filePath: string) (data: 'T) (options: JsonSerializerOptions) =
     try
-        
-        let sortedDict = dict |> Map.toSeq |> Seq.sortBy fst |> Map.ofSeq
-        let data = sortedDict |> Map.toList |> List.map snd
-        let json = JsonSerializer.Serialize(data, JsonSerializerOptions(WriteIndented = true))
+        let json = JsonSerializer.Serialize(data, options)
         File.WriteAllText(filePath, json)
-        Ok "JSON saved successfully."
+        Ok "Data saved successfully."
     with
     | ex -> Error $"Failed to save JSON: {ex.Message}"
 
@@ -35,16 +37,23 @@ let loadFromJson (filePath: string) : Result<Map<string, Word>, string> =
     try
         if File.Exists(filePath) then
             let json = File.ReadAllText(filePath)
-            let words = JsonSerializer.Deserialize<Word array>(json)
-            let dict =
-                match words with
-                | null -> Map.empty
-                | arr -> arr |> Array.map (fun w -> (w.Term.ToLower(), w)) |> Map.ofArray
-            Ok (dict |> Map.toSeq |> Seq.sortBy fst |> Map.ofSeq)
+
+            let dictOpt =
+                JsonSerializer.Deserialize<Map<string, Word>>(json)
+                |> Option.ofObj
+
+            match dictOpt with
+            | Some d ->
+                Ok (d |> Map.toSeq |> Seq.sortBy fst |> Map.ofSeq)
+            | None ->
+                Ok Map.empty
         else
-            Ok Map.empty<string, Word>
+            Ok Map.empty
     with
-    | ex -> Error $"Failed to load JSON: {ex.Message}"
+    | ex ->
+        Error $"Failed to load JSON: {ex.Message}"
+
+
 
 
 let loadFromXml (filePath: string) : Result<Map<string, Word>, string> =
