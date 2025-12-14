@@ -14,38 +14,34 @@ let getDataFilePath (fileName: string) =
 
 
 let private sortDict (dict: Map<string, Word>) =
-    dict |> Map.toSeq |> Seq.sortBy fst |> Map.ofSeq
+    dict |> Map.toSeq 
+         |> Seq.sortBy fst 
+         |> Map.ofSeq
 
 
 let addWord (term: string) (definition: string) (dict: Map<string, Word>) : Map<string, Word> =
     let key = term.ToLower()
     if dict.ContainsKey key then dict
     else
-        let newWord = Word(term, definition)
-        let newDict = dict |> Map.add key newWord |> sortDict
+        dict |> Map.add key (Word(term, definition))
+             |> sortDict
 
-        //FileIO.saveGeneric (getDataFilePath "dict.json") newDict |> ignore
-        //FileIO.saveToXml (getDataFilePath "dict.xml") newDict |> ignore
-        newDict
 
 let updateWord (term: string) (newDefinition: string) (dict: Map<string, Word>) : Map<string, Word> =
     let key = term.ToLower()
     match dict.TryFind key with
     | Some _ ->
-        let updatedWord = Word(term, newDefinition)
-        let newDict = dict |> Map.add key updatedWord |> sortDict
-        FileIO.saveGeneric (getDataFilePath "dict.json") newDict |> ignore
-        FileIO.saveToXml (getDataFilePath "dict.xml") newDict |> ignore
-        newDict
+        dict |> Map.add key (Word(term, newDefinition)) 
+             |> sortDict
+    
     | None -> dict
 
 
-let deleteWord (term: string) (dict: Map<string, Word>) : Map<string, Word> =
+let deleteWord (term: string) (dict: Map<string, Word>) =
     let key = term.ToLower()
-    let newDict = dict |> Map.remove key |> sortDict
-    FileIO.saveGeneric (getDataFilePath "dict.json") newDict |> ignore
-    FileIO.saveToXml (getDataFilePath "dict.xml") newDict |> ignore
-    newDict
+    dict |> Map.remove key 
+         |> sortDict
+   
 
 
 let getWord (term: string) (dict: Map<string, Word>) : Word option =

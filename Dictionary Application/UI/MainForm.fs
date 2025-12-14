@@ -11,9 +11,7 @@ open ErrorHandler
 open FileIO
 open Search
 
-// ==========================================
 // 1. REGISTER FORM
-// ==========================================
 type RegisterForm() as this =
     inherit Form(Text = "Register New User", Width = 400, Height = 350)
 
@@ -58,9 +56,8 @@ type RegisterForm() as this =
         )
         btnCancel.Click.Add(fun _ -> this.Close())
 
-// ==========================================
+
 // 2. MAIN FORM
-// ==========================================
 type MainForm(currentUser: User) as this = 
     inherit Form(Text = sprintf "F# Dictionary App - Welcome %s (%O)" currentUser.Username currentUser.Role, Width = 750, Height = 600)
 
@@ -169,7 +166,7 @@ type MainForm(currentUser: User) as this =
             this.Controls.AddRange([| btnAdd; btnPrintAll; btnLogout |])
             this.Text <- this.Text + " [Read Only Mode]"
 
-    // EVENTS =========================================
+    // EVENTS 
     do
         btnAdd.Click.Add(fun _ ->
             let newDict = safeAddWord txtTerm.Text txtDef.Text dict
@@ -219,9 +216,8 @@ type MainForm(currentUser: User) as this =
         base.OnLoad(e)
         refreshList()
 
-// ==========================================
+
 // 3. LOGIN FORM
-// ==========================================
 type LoginForm() as this =
     inherit Form(Text = "Login", Width = 400, Height = 300)
 
@@ -258,9 +254,8 @@ type LoginForm() as this =
             regForm.ShowDialog() |> ignore
         )
 
-// ==========================================
+
 // ENTRY POINT
-// ==========================================
 [<EntryPoint>]
 let main argv =
     Application.EnableVisualStyles()

@@ -6,17 +6,11 @@ open System.Text.Json.Serialization
 open Dictionary_Application.Models
 open CRUD
 open FileIO
-//open FileIO
 
 module UserAuth =
 
     let private usersFile = CRUD.getDataFilePath "users.json"
 
-    // دالة مساعدة لعمل إعدادات الـ JSON
-    // دي اللي بتحل مشكلة الـ Enum/Union
-    
-
-    /// تحميل اليوزرز من JSON
     let loadUsers () =
         if File.Exists(usersFile) then
             try
@@ -28,11 +22,11 @@ module UserAuth =
         else
             []
 
-    /// حفظ اليوزرز في JSON
+   
     let saveUsers (users: User list) =
         FileIO.saveGeneric usersFile users (getJsonOptions()) |> ignore
 
-    /// Register
+    
     let register username password role =
         let users = loadUsers()
 
@@ -44,7 +38,7 @@ module UserAuth =
             saveUsers updated
             Ok newUser
 
-    /// Login
+   
     let login username password =
         let users = loadUsers()
         match users |> List.tryFind (fun u -> u.Username = username && u.Password = password) with
